@@ -1,0 +1,4 @@
+OpenServer allows us to install many development softwares at once.
+We can run server at any domain at ip address localhost
+For example, in directory of OpenServer/domains we can add a folder
+lessons.text then by restarting the server, we can access this domain
