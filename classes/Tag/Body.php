@@ -1,8 +1,10 @@
 <?php
+namespace App\Tag;
+
+use App\BaseTag;
 
 use JetBrains\PhpStorm\Pure;
-
-require_once __DIR__ . './BaseTag.php';
+use LogicException;
 
 class Body
 {

@@ -1,8 +1,10 @@
 <?php
 
-require_once __DIR__ . '/BaseTag.php';
+namespace App\Tag\Predefined;
 
 // final - no child classes
+use App\BaseTag;
+
 final class Container extends BaseTag
 {
     function __construct(array $attrs = [])
@@ -11,8 +13,4 @@ final class Container extends BaseTag
         $this->attr('class', 'container');
     }
 
-    public function getName(): Name
-    {
-        throw new LogicException("Cannot change container's name");
-    }
 }

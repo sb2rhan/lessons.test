@@ -1,6 +1,6 @@
 <?php
 
-
+namespace App\Tag;
 use JetBrains\PhpStorm\Pure;
 
 class Attributes

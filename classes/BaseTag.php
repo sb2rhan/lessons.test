@@ -1,53 +1,19 @@
 <?php
+namespace App;
 
-use JetBrains\PhpStorm\Pure;
+use App\Contracts\TagContract;
 
-require_once __DIR__ . './Name.php';
-require_once __DIR__ . './Body.php';
-require_once __DIR__ . './Attributes.php';
+use App\Traits\BootTraits;
+use App\Traits\HasAttributes;
+use App\Traits\HasBody;
+use App\Traits\HasName;
 
-abstract class BaseTag
+abstract class BaseTag implements TagContract
 {
-    protected Name $name;
-    protected Attributes $attributes;
-    protected Body $body;
+    use BootTraits, HasName, HasAttributes, HasBody;
 
-    public function __construct(string $name, array $attrs = []) {
-        $this->name = new Name($name);
-        $this->body = new Body($this);
-        $this->attributes = new Attributes($attrs);
-    }
-
-    function getName(): Name {
-        return $this->name;
-    }
-
-    function isSelfClosing(): bool {
-        return $this->getName()->isSelfClosing();
-    }
-
-
-    function getAttributes(): Attributes
-    {
-        return $this->attributes;
-    }
-
-
-    function getBody(): Body
-    {
-        return $this->body;
-    }
-
-    function append($value): static
-    {
-        $this->getBody()->append($value);
-        return $this;
-    }
-
-    function prepend($value): static
-    {
-        $this->getBody()->prepend($value);
-        return $this;
+    function __construct(string $name, array $attrs = []) {
+        $this->bootTraits($name, $attrs); # will invoke traits
     }
 
     function appendTo(BaseTag $tag) {
@@ -57,13 +23,6 @@ abstract class BaseTag
 
     function prependTo(BaseTag $tag) {
         $tag->prepend($this);
-        return $this;
-    }
-
-
-    function attr(string $key, $value = null): static
-    {
-        $this->getAttributes()->set($key, $value);
         return $this;
     }
 
@@ -98,9 +57,9 @@ abstract class BaseTag
     #endregion
 
     function toString(): string {
-        $name = $this->getName();
-        $attrs = $this->getAttributes();
-        $body = $this->getBody();
+        $name = $this->name();
+        $attrs = $this->attributes();
+        $body = $this->body();
 
         $tag = "<{$name}{$attrs}";
 
@@ -112,31 +71,7 @@ abstract class BaseTag
 
     //region MAGICAL METHODS
 
-    /**
-     * It is invoked for methods that are not created
-     * We are using href() in index.php that does not exist
-     * So its' name 'href' and arguments will be here
-     * @param string $name
-     * @param array $arguments
-     * @return BaseTag
-     */
-    public function __call(string $name, array $arguments)
-    {
-        // ... unboxes an array to get just values
-        return $this->attr($name, ...$arguments);
-    }
-
-    #[Pure] public function __get(string $name)
-    {
-        return $this->getAttributes()->get($name);
-    }
-
-    public function __set(string $name, $value): void
-    {
-        $this->attr($name, $value);
-    }
-
-    function __toString() {
+    function __toString(): string {
         return $this->toString();
     }
     //endregion
