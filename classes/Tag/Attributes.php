@@ -45,6 +45,13 @@ class Attributes
         return $this->set($key, $value . $old);
     }
 
+    function remove(string $key): static
+    {
+        $attrs = $this->getAll();
+        unset($attrs[$key]);
+        return $this->setAll($attrs);
+    }
+
     #[Pure] function __toString(): string {
         $attrs = $this->getAll();
         $res = '';
