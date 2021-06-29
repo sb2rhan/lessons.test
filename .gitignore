@@ -1,5 +1,6 @@
 # Folders
-.idea
+/.idea
 
 # Files
 index.php
+/vendor/

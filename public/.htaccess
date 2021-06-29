@@ -1,0 +1,7 @@
+RewriteEngine on
+# rewrite conditions: rewrite if url directory or file not exists
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+# regular exp of paths that need to be routed to index.php
+# [] - flags, L-last rewrite, QSA - query string append
+RewriteRule ^.*$ index.php [QSA,L]
